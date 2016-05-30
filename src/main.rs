@@ -1,70 +1,30 @@
-struct Circle {
-    x: f64,
-    y: f64,
-    radius: f64,
-}
+fn sort(mut unsorted: Vec<i32>) -> Vec<i32> {
+    if unsorted.len() < 2 {
+        return unsorted
+    }
+    let mut result = Vec::new();
+    while unsorted.len() > 0 {
+        let mut sublist = vec![unsorted.remove(0)];
+        let mut leftovers = Vec::new();
+        let mut last = sublist.get(0).unwrap().clone();
 
-impl Circle {
-    fn new(x: f64, y: f64, radius: f64) -> Circle {
-        Circle {
-            x: x,
-            y: y,
-            radius: radius,
+        for item in unsorted {
+            if item >= last {
+                sublist.push(item);
+                last = item;
+            } else {
+                leftovers.push(item);
+            }
         }
+        println!("result: {:?}", result);
+        println!("sublis: {:?}", sublist);
+        result.extend(sublist);
+        unsorted = leftovers;
     }
-
-    fn area(&self) -> f64 {
-        std::f64::consts::PI * (self.radius * self.radius)
-    }
-
-    fn grow(&self, increment: f64) -> Circle {
-        Circle {
-            x: self.x,
-            y: self.y,
-            radius: self.radius + increment
-        }
-    }
-}
-
-struct CircleBuilder {
-    x: f64,
-    y: f64,
-    radius: f64,
-}
-
-impl CircleBuilder {
-    fn new() -> CircleBuilder {
-        CircleBuilder { x: 0.0, y: 0.0, radius: 1.0, }
-    }
-
-    fn x(&mut self, coordinate: f64) -> &mut CircleBuilder {
-        self.x = coordinate;
-        self
-    }
-
-    fn y(&mut self, coordinate: f64) -> &mut CircleBuilder {
-        self.y = coordinate;
-        self
-    }
-
-    fn radius(&mut self, radius: f64) -> &mut CircleBuilder {
-        self.radius = radius;
-        self
-    }
-
-    fn finalize(&self) -> Circle {
-        Circle { x: self.x, y: self.y, radius: self.radius }
-    }
+    result
 }
 
 fn main() {
-    let c = CircleBuilder::new()
-                .x(1.0)
-                .y(2.0)
-                .radius(2.0)
-                .finalize();
-    
-    println!("area: {}", c.area());
-    println!("x: {}", c.x);
-    println!("y: {}", c.y);
+    println!("{:?}", sort(vec![2, 1, 3]));
+    // println!("{:?}", sort(vec![1]));
 }

@@ -1,3 +1,6 @@
+extern crate rand;
+use rand::Rng;
+
 fn sort(mut unsorted: Vec<i32>) -> Vec<i32> {
     if unsorted.len() < 2 {
         return unsorted
@@ -19,20 +22,6 @@ fn sort(mut unsorted: Vec<i32>) -> Vec<i32> {
         result = merge(&result, &sublist);
         unsorted = leftovers;
     }
-    result
-}
-
-fn merge2(left: &Vec<i32>, right: &Vec<i32>) -> Vec<i32> {
-    if left.len() == 0 {
-        return right.clone()
-    } else if right.len() == 0 {
-        return left.clone()
-    }
-
-    let mut result: Vec<i32> = Vec::with_capacity(left.len() + right.len());
-    let offset = left.len();
-    result.extend(left);
-    result.extend(right);
     result
 }
 
@@ -66,5 +55,11 @@ fn merge(left: &Vec<i32>, right: &Vec<i32>) -> Vec<i32> {
 }
 
 fn main() {
-    println!("{:?}", sort(vec![2, 1, 3, 4, 6, 8, 10, 9, 7, 5, 11]));
+    let mut vec = Vec::new();
+    for _ in 1..11 {
+        vec.push(rand::thread_rng().gen_range(0, 100));
+    }
+    println!("The original list is: {:?}", vec);
+
+    println!("{:?}", sort(vec));
 }
